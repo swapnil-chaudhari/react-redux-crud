@@ -17,7 +17,7 @@ class Content extends Component {
     componentDidMount(){
         store.dispatch((dispatch) => {
             dispatch(fetchPosts());
-            dispatch(fetchCategories());
+            // dispatch(fetchCategories());
         })
     }
 
@@ -28,10 +28,10 @@ class Content extends Component {
 
     openModal() {
         store.dispatch((dispatch) => {
-            dispatch(fetchCategories());
+            // dispatch(fetchCategories());
             dispatch(openModal());
         })
-
+        console.log('New State : ', store.getState());
     }
 
     hideModal(isOpen) {
@@ -54,8 +54,12 @@ class Content extends Component {
 
     render() {
         console.log('edit data : ', this.props);
+        const pageStyle = {
+            overflowY : 'auto',
+            height : 600 + 'px',
+        }
         return (
-            <div id="page-wrapper">
+            <div id="page-wrapper" style={pageStyle}>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-lg-12">
