@@ -2,6 +2,9 @@ import axios from "axios";
 import { hashHistory } from 'react-router'
 import  *  as type   from './actionTypes'
 
+export const postApi     = "http://192.168.1.127/react/react-demo-app/blog.php";
+export const categoryApi = "http://192.168.1.127/react/react-demo-app/category.php";
+
 export const fetchError = () => {
     console.log('fetchErrors actions')
     return {
@@ -21,9 +24,8 @@ function fetchPosts() {
     console.log('fetchPosts actions')
     return function(dispatch) {
         dispatch({type: type.FETCH_POSTS, payload: []})
-        let endpoint = 'http://192.168.1.127/react/react-demo-app/blog.php';
 
-        axios.get(endpoint)
+        axios.get(postApi)
         .then((response) => {
             dispatch({type: type.FETCH_COMPLETED, payload: response.data})
         })
@@ -41,15 +43,17 @@ export function savePost(post){
                         }
                     }
 
-    return function(dispatch) {
-        axios.post('http://192.168.1.127/react/react-demo-app/blog.php', post, headers)
+    return function(dispatch, getState) {
+        axios.post(postApi, post, headers)
         .then((response) => {
             if (response.data.error)
                 dispatch({type: type.SAVE_POST_ERROR, payload: response.data.error})
             else {
+                console.log('before save', getState());
                 dispatch({type: type.SAVE_POST, payload: response.data})
                 dispatch(fetchPosts());
                 dispatch(fetchCategories());
+                console.log('after save', getState());
             }
 
         })
@@ -75,7 +79,7 @@ export function updatePost(post, id) {
                     }
 
     return function(dispatch) {
-        axios.put('http://192.168.1.127/react/react-demo-app/blog.php?id='+id, post, headers)
+        axios.put(postApi + '?id='+id, post, headers)
         .then((response) => {
             if (response.data.error)
                 dispatch({type: type.UPDATE_POST_ERROR, payload: response.data.error})
@@ -93,12 +97,13 @@ export function deletePost(id) {
     console.log(id);
     return function(dispatch) {
         dispatch({type: type.DELETE_POST})
-        let endpoint = 'http://localhost/react/react-demo-app/blog.php?id='+id;
+        let endpoint = postApi + '?id='+id;
 
         axios.delete(endpoint)
         .then((response) => {
             dispatch({type: type.DELETE_COMPLETED})
-            dispatch(fetchPosts())
+            dispatch(fetchPosts());
+            dispatch(fetchCategories());
             hashHistory.push('/posts');
         })
         .catch((err) => {
@@ -111,9 +116,8 @@ export function fetchCategories() {
     console.log('fetchCategories actions')
     return function(dispatch) {
         dispatch({type: type.FETCH_CATEGORIES, payload: []})
-        let endpoint = 'http://192.168.1.127/react/react-demo-app/category.php';
 
-        axios.get(endpoint)
+        axios.get(categoryApi)
         .then((response) => {
             console.log('response' , response.data);
             dispatch({type: type.FETCH_CATEGORIES_COMPLETED, payload: response.data})

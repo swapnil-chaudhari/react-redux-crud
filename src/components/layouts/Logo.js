@@ -10,7 +10,7 @@ class Logo extends Component {
                     <span className="icon-bar"></span>
                     <span className="icon-bar"></span>
                 </button>
-                <a className="navbar-brand" href="index.html">React Demo App</a>
+                <a className="navbar-brand" href="index.html">React Redux Demo App</a>
             </div>
         );
     }

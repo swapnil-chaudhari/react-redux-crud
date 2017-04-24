@@ -14,9 +14,16 @@ class Content extends Component {
         })
     }
 
+    componentDidMount(){
+        store.dispatch((dispatch) => {
+            dispatch(fetchPosts());
+            dispatch(fetchCategories());
+        })
+    }
+
     savePost(post) {
         store.dispatch(savePost(post));
-
+        console.log('after savePost', store.getState());
     }
 
     openModal() {
@@ -24,6 +31,7 @@ class Content extends Component {
             dispatch(fetchCategories());
             dispatch(openModal());
         })
+
     }
 
     hideModal(isOpen) {
@@ -32,6 +40,7 @@ class Content extends Component {
 
     deletePost(id) {
         store.dispatch(deletePost(id));
+        console.log('after delete', store.getState());
     }
 
     editPost(id) {

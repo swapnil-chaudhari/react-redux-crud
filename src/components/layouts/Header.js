@@ -9,9 +9,6 @@ class Header extends Component {
     return (
       <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
                   <Logo />
-
-                  <RightNavigation />
-
                   <SideBar />
               </nav>
     );

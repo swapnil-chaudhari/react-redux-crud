@@ -10,9 +10,6 @@ class SideBar extends Component {
                   <a href="index.html"><i className="fa fa-fw fa-dashboard"></i> Dashboard</a>
               </li>
               <li>
-                  <a href="#blogs"><i className="fa fa-fw fa-bar-chart-o"></i> Blogs</a>
-              </li>
-              <li>
                   <a href="#posts"><i className="fa fa-fw fa-table"></i> Posts</a>
               </li>
 
