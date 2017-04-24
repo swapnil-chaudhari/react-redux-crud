@@ -1,42 +1,39 @@
 import axios from "axios";
 import { hashHistory } from 'react-router'
+import  *  as type   from './actionTypes'
 
-export const FETCH_ERROR = 'FETCH_ERROR'
 export const fetchError = () => {
     console.log('fetchErrors actions')
     return {
-        type: FETCH_ERROR,
+        type: type.FETCH_ERROR,
         payload:[],
     }
 }
 
-export const FETCH_COMPLETED = 'FETCH_COMPLETED'
 export const fetchCompleted = () => {
     console.log('fetchCompleted actions')
     return {
-        type: FETCH_COMPLETED,
+        type: type.FETCH_COMPLETED,
     }
 }
 
-export const FETCH_POSTS = 'FETCH_POSTS'
 function fetchPosts() {
     console.log('fetchPosts actions')
     return function(dispatch) {
-        dispatch({type: "FETCH_POSTS", payload: []})
+        dispatch({type: type.FETCH_POSTS, payload: []})
         let endpoint = 'http://192.168.1.127/react/react-demo-app/blog.php';
 
         axios.get(endpoint)
         .then((response) => {
-            dispatch({type: FETCH_COMPLETED, payload: response.data})
+            dispatch({type: type.FETCH_COMPLETED, payload: response.data})
         })
         .catch((err) => {
-            dispatch({type: FETCH_ERROR, payload: err})
+            dispatch({type: type.FETCH_ERROR, payload: err})
         })
     }
 }
 export default fetchPosts;
 
-export const SAVE_POST = 'SAVE_POST'
 export function savePost(post){
     const headers = {
                         headers: {
@@ -48,10 +45,11 @@ export function savePost(post){
         axios.post('http://192.168.1.127/react/react-demo-app/blog.php', post, headers)
         .then((response) => {
             if (response.data.error)
-                dispatch({type: 'SAVE_POST_ERROR', payload: response.data.error})
+                dispatch({type: type.SAVE_POST_ERROR, payload: response.data.error})
             else {
-                dispatch({type: SAVE_POST, payload: response.data})
+                dispatch({type: type.SAVE_POST, payload: response.data})
                 dispatch(fetchPosts());
+                dispatch(fetchCategories());
             }
 
         })
@@ -59,15 +57,15 @@ export function savePost(post){
     }
 }
 
-export const EDIT_POST = 'EDIT_POST'
 export function editPost(id) {
     console.log('EDIT_POST actions')
+    console.log(id);
     return function(dispatch) {
-        dispatch({type: EDIT_POST, payload: id})
+        dispatch({type: type.EDIT_POST, payload: id})
     }
 }
 
-export const UPDATE_POST = 'UPDATE_POST'
+
 export function updatePost(post, id) {
     console.log('UPDATE_POST actions')
     const headers = {
@@ -80,63 +78,60 @@ export function updatePost(post, id) {
         axios.put('http://192.168.1.127/react/react-demo-app/blog.php?id='+id, post, headers)
         .then((response) => {
             if (response.data.error)
-                dispatch({type: 'UPDATE_POST_ERROR', payload: response.data.error})
+                dispatch({type: type.UPDATE_POST_ERROR, payload: response.data.error})
             else {
-                dispatch({type: UPDATE_POST, payload: response.data})
+                dispatch({type: type.UPDATE_POST, payload: response.data})
+                dispatch(fetchPosts());
+                dispatch(fetchCategories());
             }
-
         })
     }
 }
 
-export const DELETE_POST = 'DELETE_POST'
 export function deletePost(id) {
     console.log('DELETE_POST actions')
     console.log(id);
     return function(dispatch) {
-        dispatch({type: DELETE_POST})
+        dispatch({type: type.DELETE_POST})
         let endpoint = 'http://localhost/react/react-demo-app/blog.php?id='+id;
 
         axios.delete(endpoint)
         .then((response) => {
-            dispatch({type: 'DELETE_COMPLETED'})
+            dispatch({type: type.DELETE_COMPLETED})
             dispatch(fetchPosts())
             hashHistory.push('/posts');
         })
         .catch((err) => {
-            dispatch({type: "CANT_FETCH ", payload: err})
+            dispatch({type: type.CANT_FETCH, payload: err})
         })
     }
 }
 
-export const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
 export function fetchCategories() {
     console.log('fetchCategories actions')
     return function(dispatch) {
-        dispatch({type: "FETCH_CATEGORIES", payload: []})
+        dispatch({type: type.FETCH_CATEGORIES, payload: []})
         let endpoint = 'http://192.168.1.127/react/react-demo-app/category.php';
 
         axios.get(endpoint)
         .then((response) => {
             console.log('response' , response.data);
-            dispatch({type: 'FETCH_CATEGORIES_COMPLETED', payload: response.data})
+            dispatch({type: type.FETCH_CATEGORIES_COMPLETED, payload: response.data})
         })
         .catch((err) => {
-            dispatch({type: FETCH_ERROR, payload: err})
+            dispatch({type: type.FETCH_ERROR, payload: err})
         })
     }
 }
 
-export const OPEN_MODAL = 'OPEN_MODAL'
 export function openModal() {
     return function(dispatch){
-        dispatch({ type:OPEN_MODAL });
+        dispatch({ type:type.OPEN_MODAL });
     }
 }
 
-export const HIDE_MODAL = 'HIDE_MODAL'
 export function hideModal() {
     return function(dispatch){
-        dispatch({ type:HIDE_MODAL });
+        dispatch({ type:type.HIDE_MODAL });
     }
 }

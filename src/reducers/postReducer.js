@@ -61,6 +61,7 @@ export default function reducer(state={
             return {...state ,errorClass: 'alert alert-danger' , message : {success:'', fail: action.payload}}
         }
         case 'EDIT_POST': {
+            console.log(state.posts);
             const index = state.posts.findIndex(x => x.id === action.payload);
             const editPost  = state.posts[index];
             return {...state , isOpen:true,modalAction:'EDIT', editPost : editPost, message : {success : '', fail : ''}, errorClass: ''}

@@ -16,11 +16,14 @@ class Content extends Component {
 
     savePost(post) {
         store.dispatch(savePost(post));
-        // store.dispatch(fetchPosts());
+
     }
 
     openModal() {
-        store.dispatch(openModal());
+        store.dispatch((dispatch) => {
+            dispatch(fetchCategories());
+            dispatch(openModal());
+        })
     }
 
     hideModal(isOpen) {
@@ -33,15 +36,15 @@ class Content extends Component {
 
     editPost(id) {
         store.dispatch(editPost(id));
+
     }
 
     updatePost(post, id) {
-        store.dispatch(updatePost(post, id));
-        store.dispatch(fetchPosts());
+            store.dispatch(updatePost(post, id));
     }
 
     render() {
-        console.log('fetch data : ', this.props);
+        console.log('edit data : ', this.props);
         return (
             <div id="page-wrapper">
                 <div className="container-fluid">
@@ -115,11 +118,3 @@ const mapStateToProps = function(store) {
 }
 
 export default connect(mapStateToProps)(Content);
-
-// import { connect } from "react-redux"
-// import { bindActionCreators } from 'redux'
-// const  mapDispatchToProps = (dispatch) => {
-//     return bindActionCreators(fetchPosts,dispatch)
-// }
-//
-// export default connect(null, mapDispatchToProps)(Content);
